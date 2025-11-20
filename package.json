@@ -25,7 +25,7 @@
     "@mui/material": "^7.3.5",
     "@next/mdx": "^16.0.3",
     "gray-matter": "^4.0.3",
-    "next": "^15.0.0-rc.1",
+    "next": "^15.0.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-markdown": "^10.1.0"
