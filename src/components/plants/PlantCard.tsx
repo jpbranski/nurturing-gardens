@@ -27,20 +27,27 @@ export default function PlantCard({ plant }: PlantCardProps) {
     <Card
       sx={{
         height: '100%',
+        minHeight: 480,
         display: 'flex',
         flexDirection: 'column',
-        transition: 'transform 0.2s',
+        transition: 'transform 0.2s, box-shadow 0.2s',
         '&:hover': {
           transform: 'translateY(-4px)',
+          boxShadow: 4
         },
       }}
     >
       <CardMedia
         component="img"
-        height="220"
         image={plant.imageUrl || 'https://images.unsplash.com/photo-1466781783364-36c955e42a7f'}
         alt={plant.commonName}
-        sx={{ objectFit: 'cover', minHeight: '220px', maxHeight: '220px' }}
+        sx={{
+          objectFit: 'cover',
+          height: 220,
+          width: '100%',
+          aspectRatio: '16/9',
+          flexShrink: 0
+        }}
       />
       <CardContent
         sx={{
@@ -48,18 +55,43 @@ export default function PlantCard({ plant }: PlantCardProps) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          pb: 1
+          pb: 1,
+          minHeight: 200
         }}
       >
         <Box>
-          <Typography variant="h6" component="h3" gutterBottom fontWeight={600}>
+          <Typography
+            variant="h6"
+            component="h3"
+            gutterBottom
+            fontWeight={600}
+            sx={{
+              minHeight: 64,
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden'
+            }}
+          >
             {plant.commonName}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic', mb: 2 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              fontStyle: 'italic',
+              mb: 2,
+              minHeight: 40,
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden'
+            }}
+          >
             {plant.scientificName}
           </Typography>
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1, minHeight: 56 }}>
             {plant.isNative && (
               <Chip
                 label="Native"
