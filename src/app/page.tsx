@@ -22,13 +22,10 @@ import PetsIcon from '@mui/icons-material/Pets';
 import { useRouter } from 'next/navigation';
 import ClientLayout from '@/components/layout/ClientLayout';
 import BlogPostCard from '@/components/blog/BlogPostCard';
-import PlantOfTheWeekCard from '@/components/PlantOfTheWeekCard';
-import { getPlantOfTheWeek } from '@/lib/plantOfTheWeek';
 
 export default function HomePage() {
   const [zip, setZip] = useState('');
   const [manualZone, setManualZone] = useState('');
-  const [userZone, setUserZone] = useState<number>(5); // Default zone 5
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -78,7 +75,6 @@ export default function HomePage() {
         return;
       }
 
-      setUserZone(data.zoneNumber); // Update user zone
       router.push(`/browse?zone=${data.zoneNumber}&zoneDisplay=${data.zone}`);
     } catch (err) {
       setError('Network error. Please try again.');
@@ -86,9 +82,6 @@ export default function HomePage() {
       setLoading(false);
     }
   };
-
-  // Get plant of the week for current zone
-  const plantOfWeek = getPlantOfTheWeek(userZone);
 
   const handleManualZone = () => {
     if (!manualZone) return;
@@ -205,11 +198,11 @@ export default function HomePage() {
       </Box>
 
       {/* Native & Pollinator Focus */}
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+      <Container maxWidth="lg" sx={{ py: 6 }}>
         <Typography variant="h4" align="center" gutterBottom fontWeight={600}>
           Why Nurturing Gardens?
         </Typography>
-        <Grid container spacing={4} sx={{ mt: 2 }}>
+        <Grid container spacing={3} sx={{ mt: 1 }}>
           <Grid item xs={12} md={4}>
             <Paper sx={{ p: 3, textAlign: 'center', height: '100%' }}>
               <LocalFloristIcon color="success" sx={{ fontSize: 60, mb: 2 }} />
@@ -250,19 +243,8 @@ export default function HomePage() {
         </Grid>
       </Container>
 
-      {/* Plant of the Week */}
-      <Container maxWidth="lg" sx={{ py: 8 }}>
-        <Typography variant="h4" gutterBottom fontWeight={600}>
-          Plant of the Week
-        </Typography>
-        <Typography variant="body1" color="text.secondary" paragraph>
-          Our featured pick for Zone {userZone} this week
-        </Typography>
-        {plantOfWeek && <PlantOfTheWeekCard plant={plantOfWeek} zone={userZone} />}
-      </Container>
-
       {/* Blog Teaser */}
-      <Box sx={{ bgcolor: 'background.default', py: 8 }}>
+      <Box sx={{ bgcolor: 'background.default', py: 6 }}>
         <Container maxWidth="lg">
           <Typography variant="h4" gutterBottom fontWeight={600}>
             Latest from Our Blog

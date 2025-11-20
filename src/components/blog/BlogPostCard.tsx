@@ -4,7 +4,6 @@ import React from 'react';
 import {
   Card,
   CardContent,
-  CardMedia,
   Typography,
   Box,
   Chip,
@@ -12,6 +11,7 @@ import {
   CardActions,
 } from '@mui/material';
 import Link from 'next/link';
+import Image from 'next/image';
 import { BlogPostMetadata } from '@/types/blog';
 
 interface BlogPostCardProps {
@@ -57,16 +57,24 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
       }}
     >
       {post.coverImage && (
-        <CardMedia
-          component="img"
-          image={post.coverImage}
-          alt={post.title}
+        <Box
           sx={{
-            objectFit: 'cover',
+            position: 'relative',
             height: 200,
-            flexShrink: 0
+            width: '100%',
+            flexShrink: 0,
+            backgroundColor: 'grey.200'
           }}
-        />
+        >
+          <Image
+            src={post.coverImage}
+            alt={`${post.title} - Cover image`}
+            fill
+            sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
+            style={{ objectFit: 'cover' }}
+            priority={false}
+          />
+        </Box>
       )}
       <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', minHeight: 220 }}>
         <Box sx={{ mb: 1.5 }}>
@@ -125,6 +133,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
           variant="outlined"
           fullWidth
           size="small"
+          aria-label={`Read more about ${post.title}`}
         >
           Read More
         </Button>
