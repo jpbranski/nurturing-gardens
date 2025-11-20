@@ -14,7 +14,7 @@
  */
 
 import { Plant, PlantFilters } from '@/types/plant';
-import plantsData from '@/data/plants.json';
+import plantsData from '@/data/plants-full.json';
 
 // Cast the imported JSON to Plant array
 const ALL_PLANTS: Plant[] = plantsData as Plant[];

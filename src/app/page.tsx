@@ -23,11 +23,14 @@ import { useRouter } from 'next/navigation';
 import ClientLayout from '@/components/layout/ClientLayout';
 import PlantCard from '@/components/plants/PlantCard';
 import BlogPostCard from '@/components/blog/BlogPostCard';
+import PlantOfTheWeekCard from '@/components/PlantOfTheWeekCard';
 import { getAllPlants } from '@/lib/plants';
+import { getPlantOfTheWeek } from '@/lib/plantOfTheWeek';
 
 export default function HomePage() {
   const [zip, setZip] = useState('');
   const [manualZone, setManualZone] = useState('');
+  const [userZone, setUserZone] = useState<number>(5); // Default zone 5
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -115,6 +118,7 @@ export default function HomePage() {
         return;
       }
 
+      setUserZone(data.zoneNumber); // Update user zone
       router.push(`/browse?zone=${data.zoneNumber}&zoneDisplay=${data.zone}`);
     } catch (err) {
       setError('Network error. Please try again.');
@@ -122,6 +126,9 @@ export default function HomePage() {
       setLoading(false);
     }
   };
+
+  // Get plant of the week for current zone
+  const plantOfWeek = getPlantOfTheWeek(userZone);
 
   const handleManualZone = () => {
     if (!manualZone) return;
@@ -307,27 +314,40 @@ export default function HomePage() {
         </Container>
       </Box>
 
-      {/* Blog Teaser */}
+      {/* Plant of the Week */}
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <Typography variant="h4" gutterBottom fontWeight={600}>
-          Latest from Our Blog
+          Plant of the Week
         </Typography>
         <Typography variant="body1" color="text.secondary" paragraph>
-          Tips, guides, and inspiration for sustainable gardening
+          Our featured pick for Zone {userZone} this week
         </Typography>
-        <Grid container spacing={3}>
-          {recentPosts.map((post) => (
-            <Grid item xs={12} sm={6} md={4} key={post.slug}>
-              <BlogPostCard post={post} />
-            </Grid>
-          ))}
-        </Grid>
-        <Box sx={{ textAlign: 'center', mt: 4 }}>
-          <Button variant="outlined" size="large" onClick={() => router.push('/blog')}>
-            View All Posts
-          </Button>
-        </Box>
+        {plantOfWeek && <PlantOfTheWeekCard plant={plantOfWeek} zone={userZone} />}
       </Container>
+
+      {/* Blog Teaser */}
+      <Box sx={{ bgcolor: 'background.default', py: 8 }}>
+        <Container maxWidth="lg">
+          <Typography variant="h4" gutterBottom fontWeight={600}>
+            Latest from Our Blog
+          </Typography>
+          <Typography variant="body1" color="text.secondary" paragraph>
+            Tips, guides, and inspiration for sustainable gardening
+          </Typography>
+          <Grid container spacing={3}>
+            {recentPosts.map((post) => (
+              <Grid item xs={12} sm={6} md={4} key={post.slug}>
+                <BlogPostCard post={post} />
+              </Grid>
+            ))}
+          </Grid>
+          <Box sx={{ textAlign: 'center', mt: 4 }}>
+            <Button variant="outlined" size="large" onClick={() => router.push('/blog')}>
+              View All Posts
+            </Button>
+          </Box>
+        </Container>
+      </Box>
     </ClientLayout>
   );
 }

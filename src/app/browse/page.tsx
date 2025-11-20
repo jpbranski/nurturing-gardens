@@ -1,48 +1,64 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useMemo } from 'react';
 import {
   Container,
   Box,
   Typography,
   Alert,
   CircularProgress,
-  Grid,
 } from '@mui/material';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
+import Fuse from 'fuse.js';
 import ClientLayout from '@/components/layout/ClientLayout';
 import PlantCard from '@/components/plants/PlantCard';
-import PlantFilters from '@/components/plants/PlantFilters';
-import { Plant, PlantFilters as PlantFiltersType } from '@/types/plant';
-import { getAllPlants, getCuratedPlantsForZone, filterPlants } from '@/lib/plants';
+import SearchBar from '@/components/SearchBar';
+import AutocompletePanel from '@/components/AutocompletePanel';
+import FilterChips, { ChipFilters } from '@/components/FilterChips';
+import { Plant } from '@/types/plant';
+import { getAllPlants } from '@/lib/plants';
+import { sortByZoneScore } from '@/lib/zoneRanking';
+
+// Fuse.js configuration
+const fuseOptions = {
+  keys: [
+    { name: 'commonName', weight: 2 },
+    { name: 'scientificName', weight: 1.5 },
+    { name: 'plantType', weight: 0.5 },
+    { name: 'pollinators', weight: 0.3 },
+    { name: 'sunExposure', weight: 0.3 },
+    { name: 'suggestedUse', weight: 0.3 },
+  ],
+  threshold: 0.3,
+  includeScore: true,
+  minMatchCharLength: 2
+};
 
 function BrowsePageContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const zone = searchParams?.get('zone');
   const zoneDisplay = searchParams?.get('zoneDisplay');
+  const zoneNum = zone ? parseInt(zone) : undefined;
 
   const [plants, setPlants] = useState<Plant[]>([]);
-  const [curatedPlants, setCuratedPlants] = useState<Plant[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState<PlantFiltersType>({
-    zone: zone ? parseInt(zone) : undefined,
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
+  const [chipFilters, setChipFilters] = useState<ChipFilters>({
+    sunExposure: [],
+    waterNeeds: null,
+    specialAttributes: [],
+    plantTypes: []
   });
 
+  // Load all plants
   useEffect(() => {
     const loadPlants = async () => {
       setLoading(true);
       try {
-        const zoneNum = zone ? parseInt(zone) : undefined;
-
-        // Load all plants for the zone
-        const allPlants = await getAllPlants({ zone: zoneNum });
+        const allPlants = await getAllPlants();
         setPlants(allPlants);
-
-        // Load curated starter plants if zone is specified
-        if (zoneNum) {
-          const curated = await getCuratedPlantsForZone(zoneNum);
-          setCuratedPlants(curated);
-        }
       } catch (error) {
         console.error('Error loading plants:', error);
       } finally {
@@ -51,9 +67,80 @@ function BrowsePageContent() {
     };
 
     loadPlants();
-  }, [zone]);
+  }, []);
 
-  const filteredPlants = filterPlants(plants, filters);
+  // Create Fuse instance
+  const fuse = useMemo(() => {
+    return new Fuse(plants, fuseOptions);
+  }, [plants]);
+
+  // Apply filters and search
+  const filteredPlants = useMemo(() => {
+    let results = [...plants];
+
+    // Apply chip filters first
+    results = results.filter(plant => {
+      // Sun exposure filter (OR within category)
+      if (chipFilters.sunExposure.length > 0) {
+        if (!plant.sunExposure || !plant.sunExposure.some(se => chipFilters.sunExposure.includes(se))) {
+          return false;
+        }
+      }
+
+      // Water needs filter
+      if (chipFilters.waterNeeds && plant.waterNeeds !== chipFilters.waterNeeds) {
+        return false;
+      }
+
+      // Special attributes (OR within category)
+      if (chipFilters.specialAttributes.length > 0) {
+        let hasAttribute = false;
+        if (chipFilters.specialAttributes.includes('native') && plant.isNative) hasAttribute = true;
+        if (chipFilters.specialAttributes.includes('pollinator') && plant.isPollinatorFriendly) hasAttribute = true;
+        if (chipFilters.specialAttributes.includes('toxic') && plant.toxicityToPets === 'toxic') hasAttribute = true;
+        if (chipFilters.specialAttributes.includes('non-toxic') && plant.toxicityToPets === 'non-toxic') hasAttribute = true;
+        if (chipFilters.specialAttributes.includes('beginner-friendly') && plant.beginnerFriendly) hasAttribute = true;
+        if (!hasAttribute) return false;
+      }
+
+      // Plant types filter (OR within category)
+      if (chipFilters.plantTypes.length > 0) {
+        if (!plant.plantType || !chipFilters.plantTypes.includes(plant.plantType)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    // Apply fuzzy search if query exists
+    if (searchQuery.trim()) {
+      const searchResults = fuse.search(searchQuery);
+      const searchIds = new Set(searchResults.map(r => r.item.id));
+      results = results.filter(p => searchIds.has(p.id));
+    }
+
+    // Apply zone ranking if zone is specified
+    if (zoneNum) {
+      results = sortByZoneScore(results, zoneNum);
+    }
+
+    return results;
+  }, [plants, chipFilters, searchQuery, fuse, zoneNum]);
+
+  // Autocomplete suggestions (live search before full filter)
+  const autocompleteSuggestions = useMemo(() => {
+    if (!searchQuery.trim() || searchQuery.length < 2) {
+      return [];
+    }
+    const searchResults = fuse.search(searchQuery);
+    return searchResults.slice(0, 5).map(r => r.item);
+  }, [searchQuery, fuse]);
+
+  const handleSelectSuggestion = (plant: Plant) => {
+    setShowAutocomplete(false);
+    router.push(`/plants/${plant.id}`);
+  };
 
   return (
     <ClientLayout>
@@ -64,93 +151,66 @@ function BrowsePageContent() {
 
         {zone && (
           <Alert severity="info" sx={{ mb: 3 }}>
-            Showing plants suitable for Zone {zoneDisplay || zone}. Always double-check with local
-            conditions and consult your local extension service for specific recommendations.
+            Showing plants for Zone {zoneDisplay || zone}. Results are ranked by zone compatibility.
           </Alert>
         )}
 
-        <Box sx={{ display: 'flex', gap: 3, flexDirection: { xs: 'column', md: 'row' } }}>
-          {/* Filters Sidebar - Sticky on desktop */}
-          <Box
-            sx={{
-              width: { xs: '100%', md: '280px' },
-              flexShrink: 0,
-              position: { xs: 'relative', md: 'sticky' },
-              top: { md: 16 },
-              alignSelf: { md: 'flex-start' },
-              maxHeight: { md: 'calc(100vh - 100px)' },
-              overflowY: { md: 'auto' }
-            }}
-          >
-            <PlantFilters
-              filters={filters}
-              zone={zone ? parseInt(zone) : undefined}
-              onChange={setFilters}
-            />
+        {/* Search Bar */}
+        <Box sx={{ position: 'relative', mb: 3 }}>
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            onFocus={() => setShowAutocomplete(true)}
+            onBlur={() => setTimeout(() => setShowAutocomplete(false), 200)}
+            placeholder="Search plants by name, type, or characteristics..."
+          />
+          <AutocompletePanel
+            suggestions={autocompleteSuggestions}
+            onSelect={handleSelectSuggestion}
+            onClose={() => setShowAutocomplete(false)}
+            visible={showAutocomplete}
+          />
+        </Box>
+
+        {/* Filter Chips */}
+        <Box sx={{ mb: 4 }}>
+          <FilterChips filters={chipFilters} onChange={setChipFilters} />
+        </Box>
+
+        {/* Results */}
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+            <CircularProgress />
           </Box>
+        ) : (
+          <Box>
+            <Typography variant="h5" gutterBottom fontWeight={600}>
+              {filteredPlants.length} plant{filteredPlants.length !== 1 ? 's' : ''} found
+            </Typography>
 
-          {/* Plant Grid */}
-          <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-            {loading ? (
-              <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
-                <CircularProgress />
-              </Box>
+            {filteredPlants.length === 0 ? (
+              <Alert severity="warning" sx={{ mt: 2 }}>
+                No plants match your current search and filters. Try adjusting your criteria or clearing some filters.
+              </Alert>
             ) : (
-              <>
-                {/* Curated Starters */}
-                {curatedPlants.length > 0 && (
-                  <Box sx={{ mb: 6 }}>
-                    <Typography variant="h5" gutterBottom fontWeight={600}>
-                      Recommended Starters for Your Zone
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" paragraph>
-                      These beginner-friendly plants are specially curated for Zone {zone}
-                    </Typography>
-                    <Box
-                      sx={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                        gap: 3
-                      }}
-                    >
-                      {curatedPlants.map((plant) => (
-                        <PlantCard key={plant.id} plant={plant} />
-                      ))}
-                    </Box>
-                  </Box>
-                )}
-
-                {/* All Matching Plants */}
-                <Box>
-                  <Typography variant="h5" gutterBottom fontWeight={600}>
-                    {curatedPlants.length > 0 ? 'All Matching Plants' : 'Plants'}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" paragraph>
-                    {filteredPlants.length} plant{filteredPlants.length !== 1 ? 's' : ''} found
-                  </Typography>
-
-                  {filteredPlants.length === 0 ? (
-                    <Alert severity="warning">
-                      No plants match your current filters. Try adjusting your criteria.
-                    </Alert>
-                  ) : (
-                    <Box
-                      sx={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                        gap: 3
-                      }}
-                    >
-                      {filteredPlants.map((plant) => (
-                        <PlantCard key={plant.id} plant={plant} />
-                      ))}
-                    </Box>
-                  )}
-                </Box>
-              </>
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: {
+                    xs: '1fr',
+                    sm: 'repeat(auto-fill, minmax(300px, 1fr))'
+                  },
+                  gap: 3,
+                  mt: 3
+                }}
+              >
+                {filteredPlants.map((plant) => (
+                  <PlantCard key={plant.id} plant={plant} />
+                ))}
+              </Box>
             )}
           </Box>
-        </Box>
+        )}
       </Container>
     </ClientLayout>
   );
