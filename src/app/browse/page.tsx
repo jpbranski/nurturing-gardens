@@ -120,9 +120,27 @@ function BrowsePageContent() {
       results = results.filter(p => searchIds.has(p.id));
     }
 
-    // Apply zone ranking if zone is specified
+    // Apply zone ranking if zone is specified, otherwise use default sorting
     if (zoneNum) {
       results = sortByZoneScore(results, zoneNum);
+    } else {
+      // Default sorting: native first, then pollinator-friendly, then beginner-friendly
+      results.sort((a, b) => {
+        // Native plants first
+        if (a.isNative && !b.isNative) return -1;
+        if (!a.isNative && b.isNative) return 1;
+
+        // Then pollinator-friendly
+        if (a.isPollinatorFriendly && !b.isPollinatorFriendly) return -1;
+        if (!a.isPollinatorFriendly && b.isPollinatorFriendly) return 1;
+
+        // Then beginner-friendly
+        if (a.beginnerFriendly && !b.beginnerFriendly) return -1;
+        if (!a.beginnerFriendly && b.beginnerFriendly) return 1;
+
+        // Finally alphabetical by common name
+        return a.commonName.localeCompare(b.commonName);
+      });
     }
 
     return results;
@@ -156,7 +174,7 @@ function BrowsePageContent() {
         )}
 
         {/* Search Bar */}
-        <Box sx={{ position: 'relative', mb: 3 }}>
+        <Box sx={{ position: 'relative', mb: 1 }}>
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
@@ -172,8 +190,15 @@ function BrowsePageContent() {
           />
         </Box>
 
+        {/* Results Counter */}
+        {!loading && (
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            {filteredPlants.length} plant{filteredPlants.length !== 1 ? 's' : ''} found
+          </Typography>
+        )}
+
         {/* Filter Chips */}
-        <Box sx={{ mb: 4 }}>
+        <Box sx={{ mb: 3 }}>
           <FilterChips filters={chipFilters} onChange={setChipFilters} />
         </Box>
 
@@ -184,9 +209,6 @@ function BrowsePageContent() {
           </Box>
         ) : (
           <Box>
-            <Typography variant="h5" gutterBottom fontWeight={600}>
-              {filteredPlants.length} plant{filteredPlants.length !== 1 ? 's' : ''} found
-            </Typography>
 
             {filteredPlants.length === 0 ? (
               <Alert severity="warning" sx={{ mt: 2 }}>
@@ -198,10 +220,12 @@ function BrowsePageContent() {
                   display: 'grid',
                   gridTemplateColumns: {
                     xs: '1fr',
-                    sm: 'repeat(auto-fill, minmax(300px, 1fr))'
+                    sm: 'repeat(2, 1fr)',
+                    md: 'repeat(3, 1fr)',
+                    lg: 'repeat(4, 1fr)'
                   },
                   gap: 3,
-                  mt: 3
+                  mt: 2
                 }}
               >
                 {filteredPlants.map((plant) => (

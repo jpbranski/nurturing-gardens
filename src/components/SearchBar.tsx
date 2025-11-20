@@ -66,7 +66,7 @@ export default function SearchBar({
   };
 
   return (
-    <Box sx={{ width: '100%', mb: 2 }}>
+    <Box sx={{ width: '100%' }}>
       <TextField
         inputRef={inputRef}
         fullWidth
@@ -76,20 +76,21 @@ export default function SearchBar({
         onBlur={onBlur}
         placeholder={placeholder}
         autoFocus={autoFocus}
+        aria-label="Search plants"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon />
+              <SearchIcon aria-hidden="true" />
             </InputAdornment>
           ),
           sx: {
-            borderRadius: 3,
+            borderRadius: 2,
             backgroundColor: 'background.paper'
           }
         }}
         sx={{
           '& .MuiOutlinedInput-root': {
-            borderRadius: 3
+            borderRadius: 2
           }
         }}
         helperText="Press '/' to focus search"

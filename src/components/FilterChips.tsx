@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Box, Chip, Typography } from '@mui/material';
+import { Box, Chip, Typography, Button } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import { SunExposure, WaterNeeds, PlantType } from '@/types/plant';
 
 export interface ChipFilters {
@@ -17,6 +18,20 @@ interface FilterChipsProps {
 }
 
 export default function FilterChips({ filters, onChange }: FilterChipsProps) {
+  const hasActiveFilters =
+    filters.sunExposure.length > 0 ||
+    filters.waterNeeds !== null ||
+    filters.specialAttributes.length > 0 ||
+    filters.plantTypes.length > 0;
+
+  const clearAllFilters = () => {
+    onChange({
+      sunExposure: [],
+      waterNeeds: null,
+      specialAttributes: [],
+      plantTypes: []
+    });
+  };
   const toggleSunExposure = (exposure: SunExposure) => {
     const newSunExposure = filters.sunExposure.includes(exposure)
       ? filters.sunExposure.filter(e => e !== exposure)
@@ -47,9 +62,26 @@ export default function FilterChips({ filters, onChange }: FilterChipsProps) {
 
   return (
     <Box sx={{ width: '100%' }}>
+      {/* Header with Clear All button */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant="subtitle1" fontWeight={600}>
+          Filters
+        </Typography>
+        {hasActiveFilters && (
+          <Button
+            size="small"
+            startIcon={<ClearIcon />}
+            onClick={clearAllFilters}
+            sx={{ textTransform: 'none' }}
+          >
+            Clear All
+          </Button>
+        )}
+      </Box>
+
       {/* Sun Exposure */}
-      <Box sx={{ mb: 2 }}>
-        <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+      <Box sx={{ mb: 1.5 }}>
+        <Typography variant="caption" sx={{ mb: 0.5, fontWeight: 600, display: 'block', color: 'text.secondary' }}>
           Sun Exposure
         </Typography>
         <Box
@@ -93,8 +125,8 @@ export default function FilterChips({ filters, onChange }: FilterChipsProps) {
       </Box>
 
       {/* Water Needs */}
-      <Box sx={{ mb: 2 }}>
-        <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+      <Box sx={{ mb: 1.5 }}>
+        <Typography variant="caption" sx={{ mb: 0.5, fontWeight: 600, display: 'block', color: 'text.secondary' }}>
           Water Needs
         </Typography>
         <Box
@@ -138,8 +170,8 @@ export default function FilterChips({ filters, onChange }: FilterChipsProps) {
       </Box>
 
       {/* Special Attributes */}
-      <Box sx={{ mb: 2 }}>
-        <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+      <Box sx={{ mb: 1.5 }}>
+        <Typography variant="caption" sx={{ mb: 0.5, fontWeight: 600, display: 'block', color: 'text.secondary' }}>
           Special Attributes
         </Typography>
         <Box
@@ -198,7 +230,7 @@ export default function FilterChips({ filters, onChange }: FilterChipsProps) {
 
       {/* Plant Types */}
       <Box>
-        <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+        <Typography variant="caption" sx={{ mb: 0.5, fontWeight: 600, display: 'block', color: 'text.secondary' }}>
           Plant Type
         </Typography>
         <Box

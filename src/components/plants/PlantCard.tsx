@@ -27,7 +27,8 @@ export default function PlantCard({ plant }: PlantCardProps) {
     <Card
       sx={{
         height: '100%',
-        minHeight: 480,
+        minHeight: 500,
+        maxHeight: 500,
         display: 'flex',
         flexDirection: 'column',
         transition: 'transform 0.2s, box-shadow 0.2s',
@@ -40,12 +41,11 @@ export default function PlantCard({ plant }: PlantCardProps) {
       <CardMedia
         component="img"
         image={plant.imageUrl || 'https://images.unsplash.com/photo-1466781783364-36c955e42a7f'}
-        alt={plant.commonName}
+        alt={`${plant.commonName} (${plant.scientificName})`}
         sx={{
           objectFit: 'cover',
           height: 220,
           width: '100%',
-          aspectRatio: '16/9',
           flexShrink: 0
         }}
       />
@@ -56,21 +56,24 @@ export default function PlantCard({ plant }: PlantCardProps) {
           flexDirection: 'column',
           justifyContent: 'space-between',
           pb: 1,
-          minHeight: 200
+          minHeight: 220,
+          maxHeight: 220,
+          overflow: 'hidden'
         }}
       >
-        <Box>
+        <Box sx={{ flexGrow: 1 }}>
           <Typography
             variant="h6"
             component="h3"
             gutterBottom
             fontWeight={600}
             sx={{
-              minHeight: 64,
+              height: 56,
               display: '-webkit-box',
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
             }}
           >
             {plant.commonName}
@@ -81,17 +84,18 @@ export default function PlantCard({ plant }: PlantCardProps) {
             sx={{
               fontStyle: 'italic',
               mb: 2,
-              minHeight: 40,
+              height: 40,
               display: '-webkit-box',
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
             }}
           >
             {plant.scientificName}
           </Typography>
 
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1, minHeight: 56 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1, height: 60, alignContent: 'flex-start' }}>
             {plant.isNative && (
               <Chip
                 label="Native"
@@ -131,14 +135,16 @@ export default function PlantCard({ plant }: PlantCardProps) {
           </Box>
         </Box>
 
-        {plant.zoneMin && plant.zoneMax && (
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-            Zones {plant.zoneMin}–{plant.zoneMax}
-          </Typography>
-        )}
+        <Box sx={{ mt: 'auto' }}>
+          {plant.zoneMin && plant.zoneMax && (
+            <Typography variant="body2" color="text.secondary">
+              Zones {plant.zoneMin}–{plant.zoneMax}
+            </Typography>
+          )}
+        </Box>
       </CardContent>
 
-      <CardActions sx={{ px: 2, pb: 2, pt: 0 }}>
+      <CardActions sx={{ px: 2, pb: 2, pt: 0, height: 60, alignItems: 'center' }}>
         <Button
           component={Link}
           href={`/plants/${plant.id}`}

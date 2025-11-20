@@ -45,25 +45,31 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
     <Card
       sx={{
         height: '100%',
+        minHeight: 480,
+        maxHeight: 480,
         display: 'flex',
         flexDirection: 'column',
-        transition: 'transform 0.2s',
+        transition: 'transform 0.2s, box-shadow 0.2s',
         '&:hover': {
           transform: 'translateY(-4px)',
+          boxShadow: 4
         },
       }}
     >
       {post.coverImage && (
         <CardMedia
           component="img"
-          height="200"
           image={post.coverImage}
           alt={post.title}
-          sx={{ objectFit: 'cover' }}
+          sx={{
+            objectFit: 'cover',
+            height: 200,
+            flexShrink: 0
+          }}
         />
       )}
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Box sx={{ mb: 2 }}>
+      <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', minHeight: 220 }}>
+        <Box sx={{ mb: 1.5 }}>
           <Chip
             label={categoryLabels[post.category] || post.category}
             size="small"
@@ -71,21 +77,48 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
           />
         </Box>
 
-        <Typography variant="h6" component="h3" gutterBottom fontWeight={600}>
+        <Typography
+          variant="h6"
+          component="h3"
+          gutterBottom
+          fontWeight={600}
+          sx={{
+            height: 64,
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            mb: 1.5
+          }}
+        >
           {post.title}
         </Typography>
 
-        <Typography variant="body2" color="text.secondary" paragraph>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          paragraph
+          sx={{
+            flexGrow: 1,
+            display: '-webkit-box',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            mb: 2
+          }}
+        >
           {post.excerpt}
         </Typography>
 
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="text.secondary" sx={{ mt: 'auto' }}>
           {formatDate(post.publishedAt)}
           {post.author && ` • ${post.author}`}
         </Typography>
       </CardContent>
 
-      <CardActions sx={{ px: 2, pb: 2 }}>
+      <CardActions sx={{ px: 2, pb: 2, height: 60, alignItems: 'center' }}>
         <Button
           component={Link}
           href={`/blog/${post.slug}`}
