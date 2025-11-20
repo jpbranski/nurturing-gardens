@@ -28,15 +28,22 @@ export default function ContactPage() {
 
         <Grid container spacing={3} sx={{ mt: 2 }}>
           {/* Email */}
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, height: '100%' }}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Paper
+              sx={{
+                p: 3,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <EmailIcon color="primary" sx={{ mr: 1, fontSize: 32 }} />
                 <Typography variant="h6" fontWeight={600}>
                   Email
                 </Typography>
               </Box>
-              <Typography variant="body2" color="text.secondary" paragraph>
+              <Typography variant="body2" color="text.secondary" paragraph sx={{ flexGrow: 1 }}>
                 For general inquiries, suggestions, or questions about plants and gardening:
               </Typography>
               <MuiLink
@@ -51,15 +58,22 @@ export default function ContactPage() {
           </Grid>
 
           {/* Website */}
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, height: '100%' }}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Paper
+              sx={{
+                p: 3,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <WebIcon color="primary" sx={{ mr: 1, fontSize: 32 }} />
                 <Typography variant="h6" fontWeight={600}>
                   Developer Website
                 </Typography>
               </Box>
-              <Typography variant="body2" color="text.secondary" paragraph>
+              <Typography variant="body2" color="text.secondary" paragraph sx={{ flexGrow: 1 }}>
                 Learn more about the developer and other projects:
               </Typography>
               <MuiLink
@@ -76,15 +90,22 @@ export default function ContactPage() {
           </Grid>
 
           {/* GitHub Issues */}
-          <Grid item xs={12}>
-            <Paper sx={{ p: 3 }}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Paper
+              sx={{
+                p: 3,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <BugReportIcon color="primary" sx={{ mr: 1, fontSize: 32 }} />
                 <Typography variant="h6" fontWeight={600}>
-                  Bug Reports & Feature Requests
+                  Bug Reports & Features
                 </Typography>
               </Box>
-              <Typography variant="body2" color="text.secondary" paragraph>
+              <Typography variant="body2" color="text.secondary" paragraph sx={{ flexGrow: 1 }}>
                 Found a bug or have an idea for a new feature? Please submit an issue on our
                 GitHub repository:
               </Typography>
@@ -95,8 +116,13 @@ export default function ContactPage() {
                 variant="body1"
                 underline="hover"
                 fontWeight={500}
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                }}
               >
-                {repoUrl}/issues
+                GitHub Issues
               </MuiLink>
             </Paper>
           </Grid>

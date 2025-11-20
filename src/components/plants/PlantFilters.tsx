@@ -44,14 +44,14 @@ export default function PlantFilters({ filters, zone, onChange }: PlantFiltersPr
   };
 
   return (
-    <Paper sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom fontWeight={600}>
+    <Paper sx={{ p: 3, border: '1px solid', borderColor: 'divider' }}>
+      <Typography variant="h5" gutterBottom fontWeight={700} sx={{ mb: 2 }}>
         Filters
       </Typography>
 
       {zone && (
         <Box sx={{ mb: 2 }}>
-          <Chip label={`Zone ${zone}`} color="primary" />
+          <Chip label={`Zone ${zone}`} color="primary" size="medium" />
           <Typography variant="caption" display="block" sx={{ mt: 1 }} color="text.secondary">
             Showing plants suitable for your zone
           </Typography>

@@ -69,18 +69,28 @@ function BrowsePageContent() {
           </Alert>
         )}
 
-        <Grid container spacing={3}>
-          {/* Filters Sidebar */}
-          <Grid item xs={12} md={3}>
+        <Box sx={{ display: 'flex', gap: 3, flexDirection: { xs: 'column', md: 'row' } }}>
+          {/* Filters Sidebar - Sticky on desktop */}
+          <Box
+            sx={{
+              width: { xs: '100%', md: '280px' },
+              flexShrink: 0,
+              position: { xs: 'relative', md: 'sticky' },
+              top: { md: 16 },
+              alignSelf: { md: 'flex-start' },
+              maxHeight: { md: 'calc(100vh - 100px)' },
+              overflowY: { md: 'auto' }
+            }}
+          >
             <PlantFilters
               filters={filters}
               zone={zone ? parseInt(zone) : undefined}
               onChange={setFilters}
             />
-          </Grid>
+          </Box>
 
           {/* Plant Grid */}
-          <Grid item xs={12} md={9}>
+          <Box sx={{ flexGrow: 1, minWidth: 0 }}>
             {loading ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
                 <CircularProgress />
@@ -96,13 +106,17 @@ function BrowsePageContent() {
                     <Typography variant="body2" color="text.secondary" paragraph>
                       These beginner-friendly plants are specially curated for Zone {zone}
                     </Typography>
-                    <Grid container spacing={3}>
+                    <Box
+                      sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                        gap: 3
+                      }}
+                    >
                       {curatedPlants.map((plant) => (
-                        <Grid item xs={12} sm={6} md={4} key={plant.id}>
-                          <PlantCard plant={plant} />
-                        </Grid>
+                        <PlantCard key={plant.id} plant={plant} />
                       ))}
-                    </Grid>
+                    </Box>
                   </Box>
                 )}
 
@@ -120,19 +134,23 @@ function BrowsePageContent() {
                       No plants match your current filters. Try adjusting your criteria.
                     </Alert>
                   ) : (
-                    <Grid container spacing={3}>
+                    <Box
+                      sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                        gap: 3
+                      }}
+                    >
                       {filteredPlants.map((plant) => (
-                        <Grid item xs={12} sm={6} md={4} key={plant.id}>
-                          <PlantCard plant={plant} />
-                        </Grid>
+                        <PlantCard key={plant.id} plant={plant} />
                       ))}
-                    </Grid>
+                    </Box>
                   )}
                 </Box>
               </>
             )}
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Container>
     </ClientLayout>
   );
