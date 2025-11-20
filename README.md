@@ -94,6 +94,7 @@ nurturing-gardens/
 │   │   └── posts/             # Blog posts (MDX)
 │   ├── lib/                   # Utility functions
 │   │   ├── blog.ts            # Blog data layer
+│   │   ├── inference.ts       # Plant inference rules (NEW)
 │   │   ├── localPlantData.ts  # Local JSON plant data
 │   │   ├── plants.ts          # Plant data layer (wrapper)
 │   │   ├── shopping-list.ts   # Shopping list utilities
@@ -105,14 +106,22 @@ nurturing-gardens/
 │       └── zone.ts
 ├── data/                       # Plant data and overrides
 │   ├── plants.json            # Master plant dataset (authoritative)
+│   ├── plants-full.json       # Fully enriched plant data with USDA (NEW)
 │   ├── plant-overrides.json   # Manual plant metadata overrides
 │   ├── perenual-raw.json      # Raw Perenual API data (generated)
 │   ├── aspca-toxic.json       # ASPCA toxicity data (generated)
+│   ├── pollinator-plants.csv  # Curated pollinator-friendly plants (NEW)
+│   ├── usda-plants.json       # USDA plant data (generated, NEW)
+│   ├── usda-characteristics.json # USDA characteristics (generated, NEW)
+│   ├── usda-distribution.json # USDA distribution data (generated, NEW)
 │   └── overrides/             # Additional override JSON files
 ├── scripts/                    # Data ingestion scripts
 │   ├── fetch-perenual.ts      # Fetch plant data from Perenual API
+│   ├── fetch-usda.ts          # Fetch USDA PLANTS database (NEW)
 │   ├── fetch-aspca-toxicity.ts # Fetch ASPCA toxicity data
-│   └── build-master-plant-list.ts # Merge all data sources
+│   ├── build-master-plant-list.ts # Merge all data sources
+│   ├── enrich-pollinator.ts   # Enrich with pollinator data (NEW)
+│   └── enrich-master.ts       # Master enrichment with USDA + inference (NEW)
 ├── public/                     # Static assets
 ├── .env.example               # Environment variables template
 ├── next.config.mjs            # Next.js configuration
@@ -159,8 +168,10 @@ The app uses a **local JSON dataset** (`data/plants.json`) as the authoritative 
 #### Data Sources
 
 1. **Perenual API** - Comprehensive plant database
-2. **ASPCA Database** - Pet toxicity information
-3. **Local Overrides** - Custom curations and corrections
+2. **USDA PLANTS Database** - Native status, hardiness zones, and botanical characteristics
+3. **ASPCA Database** - Pet toxicity information
+4. **Pollinator Plants CSV** - Curated list of pollinator-friendly species
+5. **Local Overrides** - Custom curations and corrections
 
 #### Plant Data Ingestion System
 
@@ -209,12 +220,37 @@ This script:
 
 #### Running the Full Ingestion Pipeline
 
+**Basic Pipeline** (Perenual + ASPCA):
 ```bash
-# Run all scripts in sequence
-ts-node scripts/fetch-perenual.ts && \
-ts-node scripts/fetch-aspca-toxicity.ts && \
-ts-node scripts/build-master-plant-list.ts
+# Run all basic scripts in sequence
+ts-node -P tsconfig.scripts.json scripts/fetch-perenual.ts && \
+ts-node -P tsconfig.scripts.json scripts/fetch-aspca-toxicity.ts && \
+ts-node -P tsconfig.scripts.json scripts/build-master-plant-list.ts
 ```
+
+**Enhanced Pipeline** (with USDA + Pollinator enrichment):
+```bash
+# Step 1: Fetch base data
+ts-node -P tsconfig.scripts.json scripts/fetch-perenual.ts
+ts-node -P tsconfig.scripts.json scripts/fetch-aspca-toxicity.ts
+
+# Step 2: Fetch USDA botanical data (requires internet)
+ts-node -P tsconfig.scripts.json scripts/fetch-usda.ts
+
+# Step 3: Build base plant list
+ts-node -P tsconfig.scripts.json scripts/build-master-plant-list.ts
+
+# Step 4: Enrich with USDA, pollinator, and inference data
+ts-node -P tsconfig.scripts.json scripts/enrich-master.ts
+```
+
+The enhanced pipeline produces `data/plants-full.json` with:
+- Native status from USDA PLANTS database
+- Accurate USDA hardiness zones
+- Drought and shade tolerance ratings
+- Pollinator-friendly flags from curated list
+- Beginner-friendly inference based on multiple criteria
+- Comprehensive botanical characteristics
 
 #### Custom Plant Overrides
 
@@ -302,7 +338,9 @@ ISC License - see LICENSE file for details
 - Plant images from Unsplash
 - Icons from Material UI Icons
 - USDA Hardiness Zone data
+- USDA PLANTS Database for botanical characteristics and native status
 - ASPCA for pet toxicity information
+- Perenual API for comprehensive plant data
 
 ## 🐛 Issues & Feedback
 
