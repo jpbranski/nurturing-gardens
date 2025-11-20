@@ -26,9 +26,11 @@
     "@next/mdx": "^16.0.3",
     "fuse.js": "^7.1.0",
     "gray-matter": "^4.0.3",
+    "konva": "^9.3.22",
     "next": "^15.0.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-konva": "^18.2.10",
     "react-markdown": "^10.1.0"
   },
   "devDependencies": {

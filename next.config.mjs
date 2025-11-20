@@ -15,6 +15,11 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config) => {
+    // Block Konva's node backend to prevent SSR errors
+    config.resolve.alias['canvas'] = false;
+    return config;
+  },
 };
 
 const withMDX = createMDX({
