@@ -197,7 +197,7 @@ function isPollinatorFriendly(attracts?: string[]): boolean {
  * Fetch plant list with pagination
  */
 async function fetchPlantList(page: number = 1): Promise<{ data: PerenualPlant[], hasMore: boolean }> {
-  const url = `${API_BASE_URL}/species-list?key=${API_KEY}&page=${page}`;
+  const url = `${API_BASE_URL}/species-list?page=${page}&key=${API_KEY}`;
 
   console.log(`Fetching page ${page}...`);
 
@@ -235,7 +235,7 @@ async function fetchPlantList(page: number = 1): Promise<{ data: PerenualPlant[]
  * Fetch detailed plant information
  */
 async function fetchPlantDetails(plantId: number): Promise<any> {
-  const url = `${API_BASE_URL}/species/details/${plantId}?key=${API_KEY}`;
+  const url = `${API_BASE_URL}/species-details/${plantId}?key=${API_KEY}`;
 
   try {
     const response = await fetch(url);
