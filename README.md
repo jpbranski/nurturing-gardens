@@ -94,7 +94,8 @@ nurturing-gardens/
 │   │   └── posts/             # Blog posts (MDX)
 │   ├── lib/                   # Utility functions
 │   │   ├── blog.ts            # Blog data layer
-│   │   ├── plants.ts          # Plant data layer
+│   │   ├── localPlantData.ts  # Local JSON plant data
+│   │   ├── plants.ts          # Plant data layer (wrapper)
 │   │   ├── shopping-list.ts   # Shopping list utilities
 │   │   └── theme.ts           # MUI theme
 │   └── types/                 # TypeScript types
@@ -102,8 +103,16 @@ nurturing-gardens/
 │       ├── plant.ts
 │       ├── shopping-list.ts
 │       └── zone.ts
-├── data/
-│   └── plant-overrides.json   # Plant metadata overrides
+├── data/                       # Plant data and overrides
+│   ├── plants.json            # Master plant dataset (authoritative)
+│   ├── plant-overrides.json   # Manual plant metadata overrides
+│   ├── perenual-raw.json      # Raw Perenual API data (generated)
+│   ├── aspca-toxic.json       # ASPCA toxicity data (generated)
+│   └── overrides/             # Additional override JSON files
+├── scripts/                    # Data ingestion scripts
+│   ├── fetch-perenual.ts      # Fetch plant data from Perenual API
+│   ├── fetch-aspca-toxicity.ts # Fetch ASPCA toxicity data
+│   └── build-master-plant-list.ts # Merge all data sources
 ├── public/                     # Static assets
 ├── .env.example               # Environment variables template
 ├── next.config.mjs            # Next.js configuration
@@ -145,12 +154,93 @@ The app is a standard Next.js application and can be deployed to any platform th
 
 ### Plant Data
 
-The app uses a flexible data layer that can work with:
-1. **Mock data** (included, works out of the box)
-2. **External plant APIs** (configure via `PLANT_API_BASE_URL` and `PLANT_API_KEY`)
-3. **Local overrides** (`data/plant-overrides.json`)
+The app uses a **local JSON dataset** (`data/plants.json`) as the authoritative plant data source. This dataset is generated through a multi-step ingestion process that combines data from multiple sources.
 
-To add custom plant metadata, edit `data/plant-overrides.json` with your curated information.
+#### Data Sources
+
+1. **Perenual API** - Comprehensive plant database
+2. **ASPCA Database** - Pet toxicity information
+3. **Local Overrides** - Custom curations and corrections
+
+#### Plant Data Ingestion System
+
+The project includes a complete data ingestion pipeline:
+
+**Step 1: Fetch Perenual Data**
+```bash
+# Install ts-node if not already installed
+npm install -g ts-node
+
+# Set your Perenual API credentials in .env
+PLANT_API_BASE_URL=https://perenual.com/api
+PLANT_API_KEY=your_api_key_here
+
+# Run the fetch script
+ts-node scripts/fetch-perenual.ts
+```
+
+This script:
+- Paginates through all Perenual plants
+- Normalizes data to the project's Plant interface
+- Handles rate limiting gracefully
+- Outputs to `data/perenual-raw.json`
+
+**Step 2: Fetch ASPCA Toxicity Data**
+```bash
+ts-node scripts/fetch-aspca-toxicity.ts
+```
+
+This script:
+- Uses known ASPCA toxicity data for common plants
+- Can be extended to scrape ASPCA website
+- Outputs to `data/aspca-toxic.json`
+
+**Step 3: Build Master Plant List**
+```bash
+ts-node scripts/build-master-plant-list.ts
+```
+
+This script:
+- Merges Perenual data with ASPCA toxicity data
+- Applies overrides from `data/plant-overrides.json`
+- Applies overrides from `data/overrides/*.json`
+- Cleans and validates all data
+- Outputs final dataset to `data/plants.json`
+
+#### Running the Full Ingestion Pipeline
+
+```bash
+# Run all scripts in sequence
+ts-node scripts/fetch-perenual.ts && \
+ts-node scripts/fetch-aspca-toxicity.ts && \
+ts-node scripts/build-master-plant-list.ts
+```
+
+#### Custom Plant Overrides
+
+To add custom plant metadata or corrections:
+
+1. Edit `data/plant-overrides.json` with your plant overrides
+2. Or create new JSON files in `data/overrides/`
+3. Re-run `build-master-plant-list.ts`
+
+Example override:
+```json
+[
+  {
+    "id": "echinacea-purpurea",
+    "isNative": true,
+    "isPollinatorFriendly": true,
+    "beginnerFriendly": true,
+    "curatedForZones": [3, 4, 5, 6, 7],
+    "notes": "Drought tolerant once established. Great for beginners!"
+  }
+]
+```
+
+#### Local Development Without API Keys
+
+The repository includes a pre-populated `data/plants.json` with 6 curated plants that works out of the box. You don't need API keys to develop or deploy the app.
 
 ### Blog Posts
 
