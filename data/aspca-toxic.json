@@ -1,0 +1,295 @@
+[
+  {
+    "scientificName": "Lilium spp.",
+    "normalizedScientificName": "lilium spp",
+    "commonNames": [
+      "Lily",
+      "Easter Lily",
+      "Tiger Lily"
+    ],
+    "toxicity": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/lily"
+  },
+  {
+    "scientificName": "Narcissus spp.",
+    "normalizedScientificName": "narcissus spp",
+    "commonNames": [
+      "Daffodil",
+      "Narcissus"
+    ],
+    "toxicity": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/daffodil"
+  },
+  {
+    "scientificName": "Tulipa spp.",
+    "normalizedScientificName": "tulipa spp",
+    "commonNames": [
+      "Tulip"
+    ],
+    "toxicity": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/tulip"
+  },
+  {
+    "scientificName": "Rhododendron spp.",
+    "normalizedScientificName": "rhododendron spp",
+    "commonNames": [
+      "Azalea",
+      "Rhododendron"
+    ],
+    "toxicity": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/azalea"
+  },
+  {
+    "scientificName": "Hedera helix",
+    "normalizedScientificName": "hedera helix",
+    "commonNames": [
+      "English Ivy",
+      "Common Ivy"
+    ],
+    "toxicity": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/english-ivy"
+  },
+  {
+    "scientificName": "Nerium oleander",
+    "normalizedScientificName": "nerium oleander",
+    "commonNames": [
+      "Oleander"
+    ],
+    "toxicity": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/oleander"
+  },
+  {
+    "scientificName": "Hydrangea spp.",
+    "normalizedScientificName": "hydrangea spp",
+    "commonNames": [
+      "Hydrangea"
+    ],
+    "toxicity": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/hydrangea"
+  },
+  {
+    "scientificName": "Sago Palm",
+    "normalizedScientificName": "sago palm",
+    "commonNames": [
+      "Sago Palm",
+      "Cycas revoluta"
+    ],
+    "toxicity": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/sago-palm"
+  },
+  {
+    "scientificName": "Dieffenbachia spp.",
+    "normalizedScientificName": "dieffenbachia spp",
+    "commonNames": [
+      "Dieffenbachia",
+      "Dumb Cane"
+    ],
+    "toxicity": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/dieffenbachia"
+  },
+  {
+    "scientificName": "Aloe vera",
+    "normalizedScientificName": "aloe vera",
+    "commonNames": [
+      "Aloe",
+      "Aloe Vera"
+    ],
+    "toxicity": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/aloe-vera"
+  },
+  {
+    "scientificName": "Echinacea purpurea",
+    "normalizedScientificName": "echinacea purpurea",
+    "commonNames": [
+      "Purple Coneflower",
+      "Echinacea"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/purple-coneflower"
+  },
+  {
+    "scientificName": "Asclepias tuberosa",
+    "normalizedScientificName": "asclepias tuberosa",
+    "commonNames": [
+      "Butterfly Weed",
+      "Butterfly Milkweed"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/butterfly-weed"
+  },
+  {
+    "scientificName": "Rudbeckia hirta",
+    "normalizedScientificName": "rudbeckia hirta",
+    "commonNames": [
+      "Black-Eyed Susan"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/black-eyed-susan"
+  },
+  {
+    "scientificName": "Lavandula angustifolia",
+    "normalizedScientificName": "lavandula angustifolia",
+    "commonNames": [
+      "English Lavender",
+      "Lavender"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/lavender"
+  },
+  {
+    "scientificName": "Aquilegia canadensis",
+    "normalizedScientificName": "aquilegia canadensis",
+    "commonNames": [
+      "Wild Columbine",
+      "Canadian Columbine"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/columbine"
+  },
+  {
+    "scientificName": "Salvia officinalis",
+    "normalizedScientificName": "salvia officinalis",
+    "commonNames": [
+      "Common Sage",
+      "Garden Sage"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/sage"
+  },
+  {
+    "scientificName": "Rosmarinus officinalis",
+    "normalizedScientificName": "rosmarinus officinalis",
+    "commonNames": [
+      "Rosemary"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/rosemary"
+  },
+  {
+    "scientificName": "Ocimum basilicum",
+    "normalizedScientificName": "ocimum basilicum",
+    "commonNames": [
+      "Basil",
+      "Sweet Basil"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/basil"
+  },
+  {
+    "scientificName": "Mentha spp.",
+    "normalizedScientificName": "mentha spp",
+    "commonNames": [
+      "Mint",
+      "Peppermint",
+      "Spearmint"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/mint"
+  },
+  {
+    "scientificName": "Thymus vulgaris",
+    "normalizedScientificName": "thymus vulgaris",
+    "commonNames": [
+      "Thyme",
+      "Garden Thyme"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/thyme"
+  },
+  {
+    "scientificName": "Viola tricolor",
+    "normalizedScientificName": "viola tricolor",
+    "commonNames": [
+      "Pansy",
+      "Wild Pansy"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/pansy"
+  },
+  {
+    "scientificName": "Helianthus annuus",
+    "normalizedScientificName": "helianthus annuus",
+    "commonNames": [
+      "Sunflower",
+      "Common Sunflower"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/sunflower"
+  },
+  {
+    "scientificName": "Calendula officinalis",
+    "normalizedScientificName": "calendula officinalis",
+    "commonNames": [
+      "Calendula",
+      "Pot Marigold"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/calendula"
+  },
+  {
+    "scientificName": "Zinnia elegans",
+    "normalizedScientificName": "zinnia elegans",
+    "commonNames": [
+      "Zinnia"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/zinnia"
+  },
+  {
+    "scientificName": "Impatiens walleriana",
+    "normalizedScientificName": "impatiens walleriana",
+    "commonNames": [
+      "Impatiens",
+      "Busy Lizzie"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/impatiens"
+  },
+  {
+    "scientificName": "Petunia spp.",
+    "normalizedScientificName": "petunia spp",
+    "commonNames": [
+      "Petunia"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/petunia"
+  },
+  {
+    "scientificName": "Begonia spp.",
+    "normalizedScientificName": "begonia spp",
+    "commonNames": [
+      "Begonia"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/begonia"
+  },
+  {
+    "scientificName": "Fuchsia spp.",
+    "normalizedScientificName": "fuchsia spp",
+    "commonNames": [
+      "Fuchsia"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/fuchsia"
+  },
+  {
+    "scientificName": "Hibiscus spp.",
+    "normalizedScientificName": "hibiscus spp",
+    "commonNames": [
+      "Hibiscus",
+      "Rose of Sharon"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/hibiscus"
+  },
+  {
+    "scientificName": "Salvia nemorosa",
+    "normalizedScientificName": "salvia nemorosa",
+    "commonNames": [
+      "Woodland Sage",
+      "Balkan Clary"
+    ],
+    "toxicity": "non-toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/sage"
+  }
+]
