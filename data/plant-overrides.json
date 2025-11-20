@@ -1,0 +1,70 @@
+[
+  {
+    "id": "echinacea-purpurea",
+    "isNative": true,
+    "isPollinatorFriendly": true,
+    "toxicityToPets": "non-toxic",
+    "beginnerFriendly": true,
+    "curatedForZones": [3, 4, 5, 6, 7],
+    "pollinators": ["Butterflies", "Bees", "Goldfinches"],
+    "suggestedUse": "Prairie gardens, borders, pollinator gardens"
+  },
+  {
+    "id": "asclepias-tuberosa",
+    "isNative": true,
+    "isPollinatorFriendly": true,
+    "toxicityToPets": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control",
+    "beginnerFriendly": true,
+    "curatedForZones": [3, 4, 5, 6],
+    "pollinators": ["Monarch Butterflies", "Bees", "Other Butterflies"],
+    "suggestedUse": "Pollinator gardens, meadows, dry slopes",
+    "notes": "Essential for monarch butterfly conservation. Toxic if ingested - keep away from pets. Slow to emerge in spring."
+  },
+  {
+    "id": "rudbeckia-hirta",
+    "isNative": true,
+    "isPollinatorFriendly": true,
+    "toxicityToPets": "non-toxic",
+    "beginnerFriendly": true,
+    "curatedForZones": [3, 4, 5, 6, 7],
+    "pollinators": ["Bees", "Butterflies", "Birds (seeds)"],
+    "suggestedUse": "Borders, meadows, naturalized areas",
+    "notes": "Tolerates poor soil and drought. May self-seed prolifically. Excellent cut flower."
+  },
+  {
+    "id": "lavandula-angustifolia",
+    "isNative": false,
+    "isPollinatorFriendly": true,
+    "toxicityToPets": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/lavender",
+    "beginnerFriendly": true,
+    "curatedForZones": [5, 6, 7, 8],
+    "pollinators": ["Bees", "Butterflies"],
+    "suggestedUse": "Herb gardens, borders, containers",
+    "notes": "Requires well-drained soil. Prune after flowering. Mildly toxic to pets if ingested in large quantities."
+  },
+  {
+    "id": "aquilegia-canadensis",
+    "isNative": true,
+    "isPollinatorFriendly": true,
+    "toxicityToPets": "toxic",
+    "aspcaUrl": "https://www.aspca.org/pet-care/animal-poison-control",
+    "beginnerFriendly": true,
+    "curatedForZones": [3, 4, 5],
+    "pollinators": ["Hummingbirds", "Bees", "Butterflies"],
+    "suggestedUse": "Woodland gardens, shade gardens, rock gardens",
+    "notes": "Self-seeds readily. Prefers partial shade. All parts toxic if ingested."
+  },
+  {
+    "id": "salvia-nemorosa",
+    "isNative": false,
+    "isPollinatorFriendly": true,
+    "toxicityToPets": "non-toxic",
+    "beginnerFriendly": true,
+    "curatedForZones": [4, 5, 6, 7],
+    "pollinators": ["Bees", "Butterflies", "Hummingbirds"],
+    "suggestedUse": "Borders, cottage gardens, pollinator gardens",
+    "notes": "Deadhead to encourage continuous blooming. Drought tolerant once established."
+  }
+]
