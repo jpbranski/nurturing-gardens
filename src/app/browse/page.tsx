@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import {
   Container,
   Box,
@@ -8,8 +8,7 @@ import {
   Alert,
   CircularProgress,
   Grid,
-} from "@mui/material";
-
+} from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import ClientLayout from '@/components/layout/ClientLayout';
 import PlantCard from '@/components/plants/PlantCard';
@@ -17,7 +16,7 @@ import PlantFilters from '@/components/plants/PlantFilters';
 import { Plant, PlantFilters as PlantFiltersType } from '@/types/plant';
 import { getAllPlants, getCuratedPlantsForZone, filterPlants } from '@/lib/plants';
 
-export default function BrowsePage() {
+function BrowsePageContent() {
   const searchParams = useSearchParams();
   const zone = searchParams?.get('zone');
   const zoneDisplay = searchParams?.get('zoneDisplay');
@@ -136,5 +135,21 @@ export default function BrowsePage() {
         </Grid>
       </Container>
     </ClientLayout>
+  );
+}
+
+export default function BrowsePage() {
+  return (
+    <Suspense fallback={
+      <ClientLayout>
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+            <CircularProgress />
+          </Box>
+        </Container>
+      </ClientLayout>
+    }>
+      <BrowsePageContent />
+    </Suspense>
   );
 }

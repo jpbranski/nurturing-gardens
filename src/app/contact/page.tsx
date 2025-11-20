@@ -5,10 +5,8 @@ import {
   Box,
   Paper,
   Link as MuiLink,
-  
   Grid,
-} from "@mui/material";
-} from "@mui/material";
+} from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import WebIcon from '@mui/icons-material/Web';
 import BugReportIcon from '@mui/icons-material/BugReport';

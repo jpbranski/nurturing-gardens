@@ -4,12 +4,10 @@ import React, { useState } from 'react';
 import {
   Box,
   Typography,
-  
   Tabs,
   Tab,
   Grid,
-} from "@mui/material";
-} from "@mui/material";
+} from '@mui/material';
 import BlogPostCard from './BlogPostCard';
 import { BlogPostMetadata, BlogCategory } from '@/types/blog';
 
