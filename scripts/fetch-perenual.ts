@@ -214,9 +214,13 @@ async function fetchPlantList(page: number = 1): Promise<{ data: PerenualPlant[]
       throw new Error(`API error: ${response.status} ${response.statusText}`);
     }
 
-    const json = await response.json();
-    const data = json.data || [];
-    const hasMore = json.to < json.total;
+    const json = (await response.json()) as Record<string, any>;
+    const data = Array.isArray(json.data) ? json.data : [];
+    const hasMore =
+      typeof json.to === "number" &&
+      typeof json.total === "number"
+        ? json.to < json.total
+        : false;
 
     console.log(`✓ Fetched ${data.length} plants from page ${page}`);
 
@@ -230,7 +234,7 @@ async function fetchPlantList(page: number = 1): Promise<{ data: PerenualPlant[]
 /**
  * Fetch detailed plant information
  */
-async function fetchPlantDetails(plantId: number): Promise<PerenualDetailResponse | null> {
+async function fetchPlantDetails(plantId: number): Promise<any> {
   const url = `${API_BASE_URL}/species/details/${plantId}?key=${API_KEY}`;
 
   try {
@@ -247,7 +251,13 @@ async function fetchPlantDetails(plantId: number): Promise<PerenualDetailRespons
       return null;
     }
 
-    return await response.json();
+    const detail = (await response.json()) as any;
+    return {
+      id: detail.id ?? null,
+      common_name: detail.common_name ?? "",
+      scientific_name: detail.scientific_name ?? "",
+      ...detail
+    };
   } catch (error) {
     console.error(`Error fetching details for plant ${plantId}:`, error);
     return null;
