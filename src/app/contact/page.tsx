@@ -30,20 +30,28 @@ export default function ContactPage() {
           {/* Email */}
           <Grid item xs={12} sm={6} md={4}>
             <Paper
+              elevation={2}
               sx={{
                 p: 3,
                 height: '100%',
+                minHeight: 240,
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                border: '1px solid',
+                borderColor: 'divider',
+                transition: 'box-shadow 0.2s',
+                '&:hover': {
+                  boxShadow: 4
+                }
               }}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, minHeight: 40 }}>
                 <EmailIcon color="primary" sx={{ mr: 1, fontSize: 32 }} />
                 <Typography variant="h6" fontWeight={600}>
                   Email
                 </Typography>
               </Box>
-              <Typography variant="body2" color="text.secondary" paragraph sx={{ flexGrow: 1 }}>
+              <Typography variant="body2" color="text.secondary" paragraph sx={{ flexGrow: 1, minHeight: 60 }}>
                 For general inquiries, suggestions, or questions about plants and gardening:
               </Typography>
               <MuiLink
@@ -51,6 +59,7 @@ export default function ContactPage() {
                 variant="body1"
                 underline="hover"
                 fontWeight={500}
+                aria-label="Send email to dev@jpbranski.com"
               >
                 dev@jpbranski.com
               </MuiLink>
@@ -60,20 +69,28 @@ export default function ContactPage() {
           {/* Website */}
           <Grid item xs={12} sm={6} md={4}>
             <Paper
+              elevation={2}
               sx={{
                 p: 3,
                 height: '100%',
+                minHeight: 240,
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                border: '1px solid',
+                borderColor: 'divider',
+                transition: 'box-shadow 0.2s',
+                '&:hover': {
+                  boxShadow: 4
+                }
               }}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, minHeight: 40 }}>
                 <WebIcon color="primary" sx={{ mr: 1, fontSize: 32 }} />
                 <Typography variant="h6" fontWeight={600}>
                   Developer Website
                 </Typography>
               </Box>
-              <Typography variant="body2" color="text.secondary" paragraph sx={{ flexGrow: 1 }}>
+              <Typography variant="body2" color="text.secondary" paragraph sx={{ flexGrow: 1, minHeight: 60 }}>
                 Learn more about the developer and other projects:
               </Typography>
               <MuiLink
@@ -83,6 +100,7 @@ export default function ContactPage() {
                 variant="body1"
                 underline="hover"
                 fontWeight={500}
+                aria-label="Visit developer website at jpbranski.com"
               >
                 jpbranski.com
               </MuiLink>
@@ -92,22 +110,29 @@ export default function ContactPage() {
           {/* GitHub Issues */}
           <Grid item xs={12} sm={6} md={4}>
             <Paper
+              elevation={2}
               sx={{
                 p: 3,
                 height: '100%',
+                minHeight: 240,
                 display: 'flex',
-                flexDirection: 'column'
+                flexDirection: 'column',
+                border: '1px solid',
+                borderColor: 'divider',
+                transition: 'box-shadow 0.2s',
+                '&:hover': {
+                  boxShadow: 4
+                }
               }}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, minHeight: 40 }}>
                 <BugReportIcon color="primary" sx={{ mr: 1, fontSize: 32 }} />
                 <Typography variant="h6" fontWeight={600}>
                   Bug Reports & Features
                 </Typography>
               </Box>
-              <Typography variant="body2" color="text.secondary" paragraph sx={{ flexGrow: 1 }}>
-                Found a bug or have an idea for a new feature? Please submit an issue on our
-                GitHub repository:
+              <Typography variant="body2" color="text.secondary" paragraph sx={{ flexGrow: 1, minHeight: 60 }}>
+                Found a bug or have an idea for a new feature? Please submit an issue on our GitHub repository:
               </Typography>
               <MuiLink
                 href={`${repoUrl}/issues`}
@@ -116,6 +141,7 @@ export default function ContactPage() {
                 variant="body1"
                 underline="hover"
                 fontWeight={500}
+                aria-label="Submit bug reports or feature requests on GitHub"
                 sx={{
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',

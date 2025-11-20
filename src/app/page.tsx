@@ -21,10 +21,8 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import PetsIcon from '@mui/icons-material/Pets';
 import { useRouter } from 'next/navigation';
 import ClientLayout from '@/components/layout/ClientLayout';
-import PlantCard from '@/components/plants/PlantCard';
 import BlogPostCard from '@/components/blog/BlogPostCard';
 import PlantOfTheWeekCard from '@/components/PlantOfTheWeekCard';
-import { getAllPlants } from '@/lib/plants';
 import { getPlantOfTheWeek } from '@/lib/plantOfTheWeek';
 
 export default function HomePage() {
@@ -34,44 +32,6 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-
-  // For demo purposes, show some featured plants from zone 5
-  const [featuredPlants] = useState(() => {
-    // This would normally be async, but for simplicity we'll use a mock
-    return [
-      {
-        id: 'echinacea-purpurea',
-        commonName: 'Purple Coneflower',
-        scientificName: 'Echinacea purpurea',
-        imageUrl: 'https://images.unsplash.com/photo-1597165171577-346229e51a45',
-        isNative: true,
-        isPollinatorFriendly: true,
-        beginnerFriendly: true,
-        toxicityToPets: 'non-toxic' as const,
-      },
-      {
-        id: 'rudbeckia-hirta',
-        commonName: 'Black-Eyed Susan',
-        scientificName: 'Rudbeckia hirta',
-        imageUrl: 'https://images.unsplash.com/photo-1595429973945-f0d3c80fc571',
-        isNative: true,
-        isPollinatorFriendly: true,
-        beginnerFriendly: true,
-        toxicityToPets: 'non-toxic' as const,
-      },
-      {
-        id: 'asclepias-tuberosa',
-        commonName: 'Butterfly Weed',
-        scientificName: 'Asclepias tuberosa',
-        imageUrl: 'https://images.unsplash.com/photo-1563207153-f403bf289096',
-        isNative: true,
-        isPollinatorFriendly: true,
-        beginnerFriendly: true,
-        toxicityToPets: 'toxic' as const,
-      },
-    ];
-  });
-
 
   const recentPosts = [
     {
@@ -289,30 +249,6 @@ export default function HomePage() {
           </Grid>
         </Grid>
       </Container>
-
-      {/* Featured Plants */}
-      <Box sx={{ bgcolor: 'background.default', py: 8 }}>
-        <Container maxWidth="lg">
-          <Typography variant="h4" gutterBottom fontWeight={600}>
-            Featured Plants
-          </Typography>
-          <Typography variant="body1" color="text.secondary" paragraph>
-            Start your garden with these beginner-friendly native plants
-          </Typography>
-          <Grid container spacing={3}>
-            {featuredPlants.map((plant) => (
-              <Grid item xs={12} sm={6} md={4} key={plant.id}>
-                <PlantCard plant={plant} />
-              </Grid>
-            ))}
-          </Grid>
-          <Box sx={{ textAlign: 'center', mt: 4 }}>
-            <Button variant="contained" size="large" onClick={() => router.push('/browse')}>
-              Browse All Plants
-            </Button>
-          </Box>
-        </Container>
-      </Box>
 
       {/* Plant of the Week */}
       <Container maxWidth="lg" sx={{ py: 8 }}>
