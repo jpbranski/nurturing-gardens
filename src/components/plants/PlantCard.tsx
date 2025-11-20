@@ -4,7 +4,6 @@ import React from 'react';
 import {
   Card,
   CardContent,
-  CardMedia,
   Typography,
   Box,
   Chip,
@@ -16,6 +15,7 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import WarningIcon from '@mui/icons-material/Warning';
 import StarIcon from '@mui/icons-material/Star';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Plant } from '@/types/plant';
 
 interface PlantCardProps {
@@ -23,6 +23,9 @@ interface PlantCardProps {
 }
 
 export default function PlantCard({ plant }: PlantCardProps) {
+  const defaultImage = 'https://images.unsplash.com/photo-1466781783364-36c955e42a7f';
+  const imageUrl = plant.imageUrl || defaultImage;
+
   return (
     <Card
       sx={{
@@ -38,17 +41,24 @@ export default function PlantCard({ plant }: PlantCardProps) {
         },
       }}
     >
-      <CardMedia
-        component="img"
-        image={plant.imageUrl || 'https://images.unsplash.com/photo-1466781783364-36c955e42a7f'}
-        alt={`${plant.commonName} (${plant.scientificName})`}
+      <Box
         sx={{
-          objectFit: 'cover',
+          position: 'relative',
           height: 220,
           width: '100%',
-          flexShrink: 0
+          flexShrink: 0,
+          backgroundColor: 'grey.200'
         }}
-      />
+      >
+        <Image
+          src={imageUrl}
+          alt={`${plant.commonName} (${plant.scientificName}) - Photo showing typical appearance`}
+          fill
+          sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, (max-width: 1280px) 33vw, 25vw"
+          style={{ objectFit: 'cover' }}
+          priority={false}
+        />
+      </Box>
       <CardContent
         sx={{
           flexGrow: 1,
@@ -151,6 +161,7 @@ export default function PlantCard({ plant }: PlantCardProps) {
           variant="contained"
           fullWidth
           size="small"
+          aria-label={`View details for ${plant.commonName}`}
         >
           View Details
         </Button>

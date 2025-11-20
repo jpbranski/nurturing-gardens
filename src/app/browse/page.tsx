@@ -24,12 +24,14 @@ const fuseOptions = {
   keys: [
     { name: 'commonName', weight: 2 },
     { name: 'scientificName', weight: 1.5 },
-    { name: 'plantType', weight: 0.5 },
-    { name: 'pollinators', weight: 0.3 },
-    { name: 'sunExposure', weight: 0.3 },
-    { name: 'suggestedUse', weight: 0.3 },
+    { name: 'plantType', weight: 1.2 },
+    { name: 'pollinators', weight: 0.8 },
+    { name: 'sunExposure', weight: 0.8 },
+    { name: 'waterNeeds', weight: 0.8 },
+    { name: 'suggestedUse', weight: 0.5 },
+    { name: 'description', weight: 0.4 },
   ],
-  threshold: 0.3,
+  threshold: 0.4,
   includeScore: true,
   minMatchCharLength: 2
 };
@@ -113,19 +115,67 @@ function BrowsePageContent() {
       return true;
     });
 
-    // Apply fuzzy search if query exists
+    // Apply search if query exists
     if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+
+      // Check for zone search patterns (e.g., "zone 5", "zone:5", "z5")
+      const zoneMatch = query.match(/(?:zone[:\s]*|^z)(\d{1,2})$/i);
+      if (zoneMatch) {
+        const searchZone = parseInt(zoneMatch[1]);
+        if (!isNaN(searchZone) && searchZone >= 1 && searchZone <= 13) {
+          results = results.filter(p =>
+            p.zoneMin && p.zoneMax && searchZone >= p.zoneMin && searchZone <= p.zoneMax
+          );
+          return sortResults(results);
+        }
+      }
+
+      // Check for attribute keywords
+      const attributeKeywords = {
+        native: () => results.filter(p => p.isNative),
+        pollinator: () => results.filter(p => p.isPollinatorFriendly),
+        toxic: () => results.filter(p => p.toxicityToPets === 'toxic'),
+        'non-toxic': () => results.filter(p => p.toxicityToPets === 'non-toxic'),
+        'pet safe': () => results.filter(p => p.toxicityToPets === 'non-toxic'),
+        'pet friendly': () => results.filter(p => p.toxicityToPets === 'non-toxic'),
+        beginner: () => results.filter(p => p.beginnerFriendly),
+        'full sun': () => results.filter(p => p.sunExposure?.includes('full-sun')),
+        'part sun': () => results.filter(p => p.sunExposure?.includes('part-sun')),
+        shade: () => results.filter(p => p.sunExposure?.includes('shade')),
+        'low water': () => results.filter(p => p.waterNeeds === 'low'),
+        'medium water': () => results.filter(p => p.waterNeeds === 'medium'),
+        'high water': () => results.filter(p => p.waterNeeds === 'high'),
+        drought: () => results.filter(p => p.waterNeeds === 'low'),
+      };
+
+      // Check if query matches any attribute keywords
+      for (const [keyword, filterFn] of Object.entries(attributeKeywords)) {
+        if (query.includes(keyword)) {
+          results = filterFn();
+          return sortResults(results);
+        }
+      }
+
+      // Fall back to fuzzy search
       const searchResults = fuse.search(searchQuery);
       const searchIds = new Set(searchResults.map(r => r.item.id));
       results = results.filter(p => searchIds.has(p.id));
     }
 
+    return sortResults(results);
+  }, [plants, chipFilters, searchQuery, fuse, zoneNum]);
+
+  // Helper function to sort results
+  const sortResults = (results: Plant[]) => {
+    const sorted = [...results];
+
     // Apply zone ranking if zone is specified, otherwise use default sorting
     if (zoneNum) {
-      results = sortByZoneScore(results, zoneNum);
+      return sortByZoneScore(sorted, zoneNum);
     } else {
       // Default sorting: native first, then pollinator-friendly, then beginner-friendly
-      results.sort((a, b) => {
+      sorted.sort((a, b) => {
         // Native plants first
         if (a.isNative && !b.isNative) return -1;
         if (!a.isNative && b.isNative) return 1;
@@ -141,10 +191,9 @@ function BrowsePageContent() {
         // Finally alphabetical by common name
         return a.commonName.localeCompare(b.commonName);
       });
+      return sorted;
     }
-
-    return results;
-  }, [plants, chipFilters, searchQuery, fuse, zoneNum]);
+  };
 
   // Autocomplete suggestions (live search before full filter)
   const autocompleteSuggestions = useMemo(() => {
@@ -192,13 +241,13 @@ function BrowsePageContent() {
 
         {/* Results Counter */}
         {!loading && (
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
             {filteredPlants.length} plant{filteredPlants.length !== 1 ? 's' : ''} found
           </Typography>
         )}
 
         {/* Filter Chips */}
-        <Box sx={{ mb: 3 }}>
+        <Box sx={{ mb: 2 }}>
           <FilterChips filters={chipFilters} onChange={setChipFilters} />
         </Box>
 
